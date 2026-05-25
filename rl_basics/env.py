@@ -34,10 +34,14 @@ class RoomEnv(): # room with 1 agent, all square are 0 and agent is 1 #(BaseEnv)
         if not agent_position_x<=room_size-1:                               # Check if agent can move left
           agent_position_x -=1
       return [agent_position_x, agent_position_y]
+    
     def terminate(self, pos):
       if self.state[pos[0], pos[1]] != 0:
         self.done = True
         return True
+    
+    def action_space():
+      return(1,2,3,4)
     
     def visualize_env(self):
       plt.imshow(self.state)

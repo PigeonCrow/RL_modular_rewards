@@ -44,7 +44,7 @@ class Agent:
             Qs[a] = self.V[s_hat[0]][s_hat[1]]
         a = self.softmax_choice(Qs)
         env.step(a, simulated=False)
-        return a, Qs
+        return Qs
 
 
 # %%

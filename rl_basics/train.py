@@ -13,6 +13,7 @@ def main():
         env=experiment,
         learning_rate=0.8,
     )
+    epoch_agent = []
     for i in range(epochs):
         s = experiment.agent_position
         action = agent.choose_action()
@@ -33,6 +34,8 @@ def main():
             print(f"EXIT AT EPOCH:{i}")
             break
         # plot_q_value_map(experiment, agent)
+        epoch_agent.append((i, agent))
+
         
     # print(agent.V)
     # print(experiment.agent_position)

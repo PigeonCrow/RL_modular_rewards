@@ -18,6 +18,7 @@ class RoomEnv:  # room with 1 agent, all square are 0 and agent is 1 #(BaseEnv):
             # self.reward_position = [np.random.randint(0,self.room_size), np.random.randint(0, self.room_size)]
         else:
             self.reward_position = reward_position
+        print("reward is at ", self.reward_position)
         self.state = np.zeros((room_size, room_size))  # empty room (all squares are 0)
         self.state[start_position[0], start_position[1]] = (
             1  # position the agent at start_position[x,y]

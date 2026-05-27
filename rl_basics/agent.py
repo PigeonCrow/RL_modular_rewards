@@ -18,7 +18,6 @@ class Agent:
         self.beta = beta
         self.lr = learning_rate
         self.env = env
-        self.state = env.__init__()
         self.V = np.zeros((env.room_size, env.room_size))
         self.action_space = env.action_space()
 

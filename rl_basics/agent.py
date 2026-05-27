@@ -54,5 +54,4 @@ def reward_function(env):  # Return 1 if agent is at goal position or 0 otherwis
     else:
         return -0.1
 
-
 # %%

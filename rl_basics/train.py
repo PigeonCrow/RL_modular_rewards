@@ -5,7 +5,7 @@ from env import RoomEnv
 from plots import plot_q_value_map
 # %%
 def main():
-    epochs = 10000
+    steps = 10000
     experiment = RoomEnv()
     # re = rp
     agent = Agent(
@@ -13,8 +13,8 @@ def main():
         env=experiment,
         learning_rate=0.8,
     )
-    epoch_agent = []
-    for i in range(epochs):
+    step_agent = []
+    for i in range(steps):
         s = experiment.agent_position
         action = agent.choose_action()
         # print(i)
@@ -31,15 +31,15 @@ def main():
             experiment.done=True
             pass
         if experiment.done:
-            print(f"EXIT AT EPOCH:{i}")
+            print(f"EXIT AT STEP:{i}")
             break
         # plot_q_value_map(experiment, agent)
-        epoch_agent.append((i, agent))
+        step_agent.append((i, agent))
 
         
     # print(agent.V)
     # print(experiment.agent_position)
-    plot_q_value_map(experiment, agent)
+    plot_q_value_map(experiment, agent.V)
 
 # %%
 if __name__ == "__main__":

@@ -6,12 +6,12 @@ from millidge_env import RoomEnv
 from plots import plot_q_value_map, plot_q_value_maps
 # %%
 def main():
-    epochs = 10000
+    steps = 10000
     n_agents = 6
     experiments = [RoomEnv() for x in range(0, n_agents)]
     # re = rp
     agents = [Agent(reward_function=rp,env=experiment,learning_rate=0.8) for experiment in experiments]
-    for i in range(epochs):
+    for i in range(steps):
         s = [experiment.agent_position for experiment in experiments]
         Qs = [agent.choose_action() for agent in agents]
         # print(i)
@@ -31,7 +31,7 @@ def main():
             experiments[0].done=True
             pass
         if experiments[0].done:
-            print(f"EXIT AT EPOCH:{i}")
+            print(f"EXIT AT STEP:{i}")
             break
     # print(agent.V)
     # print(experiment.agent_position)

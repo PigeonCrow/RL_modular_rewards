@@ -1,6 +1,7 @@
 # %%
 import numpy as np
-from millidge_agent import Agent, reward_function as rp
+# from millidge_agent import Agent, reward_function as rp
+from agent import Agent_millidge as Agent, reward_function as rp
 from millidge_env import RoomEnv
 from plots import plot_q_value_map, plot_q_value_maps
 # %%
@@ -31,9 +32,6 @@ def main():
         if experiments[0].done:
             print(f"EXIT AT EPOCH:{i}")
             break
-        # plot_q_value_map(experiment1, agent1)
-        # plot_q_value_map(experiment2, agent2)
-        # plot_q_value_map(experiment3, agent3)
     # print(agent.V)
     # print(experiment.agent_position)
     plot_q_value_map(experiments[0], agents[0])

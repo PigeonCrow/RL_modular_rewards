@@ -23,6 +23,7 @@ def main():
         snext = [experiment.step(meta_action) for experiment in experiments]
         # print(experiment.agent_position)
         rewards = [agent.update_V(s[0], snext[0]) for agent in agents]
+        # meta_V =  np.sum([agent.V for agent in agents])
         if len(rewards) > 0 and all(x >= 1 for x in rewards):
             experiments[0].done=True
             pass
@@ -34,7 +35,7 @@ def main():
             break
     # print(agent.V)
     # print(experiment.agent_position)
-    plot_q_value_map(experiments[0], agents[0])
+    plot_q_value_map(experiments[0], agents[0].V)
     plot_q_value_maps(experiments, agents)
 
 # %%

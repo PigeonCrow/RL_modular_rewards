@@ -44,8 +44,8 @@ def plot_rewards():
 #     pass
 
 
-def plot_q_value_map(env, agent):
-    value_map = agent.V
+def plot_q_value_map(env, agent_V):
+    value_map = agent_V
     fig, ax = plt.subplots(figsize=(7, 7))
 
     m = np.nanmax(np.abs(value_map))
@@ -77,12 +77,12 @@ def plot_q_value_map(env, agent):
 
 
 def plot_step_wise_q_value(env, Qs):
-    
+
     pass
 
 
-def plot_q_value_map_ax(ax, env, agent):
-    value_map = agent.V
+def plot_q_value_map_ax(ax, env, agent_V):
+    value_map = agent_V
     m = np.nanmax(np.abs(value_map))
     cax = ax.imshow(
         value_map,
@@ -102,7 +102,7 @@ def plot_q_value_map_ax(ax, env, agent):
     
     return cax
 
-def plot_q_value_maps(envs, agents, ncols=3, figsize_per_plot=4, suptitle="Learned Policies and State Values"):
+def plot_q_value_maps(envs, agents, ncols=3, figsize_per_plot=4, meta_value=True, suptitle="Learned Policies and State Values"):
     if len(agents) not in (1, len(envs)):
         raise ValueError("agents must be length 1 or same length as envs")
     N = len(envs)
@@ -118,9 +118,17 @@ def plot_q_value_maps(envs, agents, ncols=3, figsize_per_plot=4, suptitle="Learn
     last_cax = None
     for i, env in enumerate(envs):
         ax = axes[i]
-        ax.set_title(f"Agent-{i}")
+        
         agent = agents[0] if len(agents) == 1 else agents[i]
-        last_cax = plot_q_value_map_ax(ax, env, agent)
+        last_cax = plot_q_value_map_ax(ax, env, agent.V)
+    
+    if meta_value:
+        ax = axes[i]
+        ax.set_title(f"Meta Q-Values")
+        agent = agents[0] if len(agents) == 1 else agents[i]
+        meta_V =  np.sum([agent.V for agent in agents], (1,))
+        print("meta",meta_V)
+        last_cax = plot_q_value_map_ax(ax, env, meta_V)
 
     for j in range(N, len(axes)):
         axes[j].axis("off")

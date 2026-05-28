@@ -45,8 +45,27 @@ class Agent:
         env.step(a, simulated=False)
         return a
 
-#%%
+
+# %%
 class Agent_millidge(Agent):
+    def __init__(
+        self,
+        reward_function,
+        env,
+        gamma=0.99,
+        learning_rate=0.1,
+        beta=1,
+        motivation=0.5,
+    ):
+        super().__init__(
+            reward_function,
+            env,
+            gamma=0.99,
+            learning_rate=0.1,
+            beta=1,
+        )
+        self.motivation = motivation
+
     def choose_action(self):
         Qs = np.zeros(len(self.action_space))
         env = self.env
@@ -56,6 +75,17 @@ class Agent_millidge(Agent):
         a = self.softmax_choice(Qs)
         env.step(a, simulated=False)
         return Qs
+    
+    def update_V(self, s, snext):
+        r = self.reward_function(self.env)
+        V = self.V
+        motivation = self.motivation
+        V[s[0]][s[1]] = motivation* (V[s[0]][s[1]] + self.lr * (
+            r + self.gamma * self.V[snext[0]][snext[1]] - V[s[0]][s[1]]
+        ))
+        self.V = V
+        return r
+
 
 # %%
 def reward_function(env):  # Return 1 if agent is at goal position or 0 otherwiser
@@ -63,5 +93,6 @@ def reward_function(env):  # Return 1 if agent is at goal position or 0 otherwis
         return 1
     else:
         return -0.1
+
 
 # %%

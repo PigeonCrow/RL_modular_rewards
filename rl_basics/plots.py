@@ -76,7 +76,8 @@ def plot_q_value_map(env, agent):
     plt.show()
 
 
-def plot_step_wise_q_value():
+def plot_step_wise_q_value(env, Qs):
+    
     pass
 
 

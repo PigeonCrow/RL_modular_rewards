@@ -83,6 +83,7 @@ def plot_step_wise_q_value(env, Qs):
 
 def plot_q_value_map_ax(ax, env, agent_V):
     value_map = agent_V
+    print(value_map)
     m = np.nanmax(np.abs(value_map))
     cax = ax.imshow(
         value_map,

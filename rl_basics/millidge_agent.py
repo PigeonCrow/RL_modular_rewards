@@ -44,7 +44,7 @@ class Agent:
             Qs[a] = self.V[s_hat[0]][s_hat[1]]
         a = self.softmax_choice(Qs)
         env.step(a, simulated=False)
-        return Qs
+        return a, Qs
 
 
 # %%
@@ -53,5 +53,6 @@ def reward_function(env):  # Return 1 if agent is at goal position or 0 otherwis
         return 1
     else:
         return -0.1
+
 
 # %%

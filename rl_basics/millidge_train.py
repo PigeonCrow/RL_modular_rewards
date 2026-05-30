@@ -2,7 +2,7 @@
 import numpy as np
 from millidge_agent import Agent, reward_function as rp
 from millidge_env import RoomEnv
-from plots import plot_q_value_map, plot_three_agents
+from plots import plot_q_value_map, plot_q_value_maps
 # %%
 def main():
     epochs = 10000
@@ -57,8 +57,8 @@ def main():
         # plot_q_value_map(experiment3, agent3)
     # print(agent.V)
     # print(experiment.agent_position)
-    plot_q_value_map(experiment1, agent1)
-    plot_three_agents(experiment1, [agent1, agent2, agent3])
+    plot_q_value_map(experiment1, agent1.V)
+    plot_q_value_maps([experiment1, experiment2, experiment3], [agent1, agent2, agent3], meta_value=False)
 
 # %%
 if __name__ == "__main__":

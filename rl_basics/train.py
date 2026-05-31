@@ -2,7 +2,7 @@
 from agent import Agent
 from agent import reward_function as rp
 from env import RoomEnv
-from plots import plot_q_value_map
+from plots import plot_q_value_map, plot_rewards
 
 
 # %%
@@ -17,6 +17,8 @@ def main():
     )
     step_agent = []
     experiment.visualize_env()
+    reward = 0
+    reward_track = []
     for i in range(steps):
         s = experiment.agent_position
         action = agent.choose_action()
@@ -25,7 +27,8 @@ def main():
         # print(agent.V)
         snext = experiment.step(action)
         # print(experiment.agent_position)
-        reward = agent.update_V(s, snext)
+        reward += agent.update_V(s, snext)
+        reward_track.append(reward)
         # print(reward)
         if reward > 0:
             experiment.done = True
@@ -34,14 +37,16 @@ def main():
             experiment.done = True
             pass
         if experiment.done:
-            print(f"EXIT AT STEP:{i}")
-            break
+            # print(f"EXIT AT STEP:{i}")
+            # break
+            pass
         # plot_q_value_map(experiment, agent)
         step_agent.append((i, agent))
 
     # print(agent.V)
     # print(experiment.agent_position)
     plot_q_value_map(experiment, agent.V)
+    plot_rewards(reward_track)
 
 
 # %%

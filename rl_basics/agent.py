@@ -20,6 +20,7 @@ class Agent:
         self.env = env
         self.V = np.zeros((env.room_size, env.room_size))
         self.action_space = env.action_space()
+        self.reward = 0
 
     def update_V(self, s, snext):
         r = self.reward_function(self.env)
@@ -93,7 +94,7 @@ def reward_function(env):  # Return 1 if agent is at goal position or 0 otherwis
     if env.agent_position == env.reward_position:
         return 1
     else:
-        return -0.1
+        return -0.01
 
 
 # %%

@@ -1,6 +1,6 @@
 # %%
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 class RoomEnv:  # room with 1 agent, all square are 0 and agent is 1 #(BaseEnv):
@@ -13,8 +13,11 @@ class RoomEnv:  # room with 1 agent, all square are 0 and agent is 1 #(BaseEnv):
         self.room_size = room_size  # Length of square
         self.start_point = start_position  # start position
         self.agent_position = self.start_point
-        if reward_position == None:
-            self.reward_position = [np.random.randint(self.room_size/2,self.room_size), np.random.randint(self.room_size/2, self.room_size)] # stylistic choice reward is always in second half of the map
+        if reward_position is None:
+            self.reward_position = [
+                np.random.randint(self.room_size / 2, self.room_size),
+                np.random.randint(self.room_size / 2, self.room_size),
+            ]  # stylistic choice reward is always in second half of the map
         else:
             self.reward_position = reward_position
         print("reward is at ", self.reward_position)

@@ -1,6 +1,9 @@
 # %%
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+
+# from plots import plot_reward_function
+# from agent import reward_function
 
 
 class RoomEnv:  # room with 1 agent, all square are 0 and agent is 1 #(BaseEnv):
@@ -13,8 +16,9 @@ class RoomEnv:  # room with 1 agent, all square are 0 and agent is 1 #(BaseEnv):
         self.room_size = room_size  # Length of square
         self.start_point = start_position  # start position
         self.agent_position = self.start_point
-        if reward_position == None:
-            self.reward_position = [room_size-1, room_size-1]
+        print(room_size)
+        if reward_position is None:
+            self.reward_position = [room_size - 1, room_size - 1]
             # self.reward_position = [np.random.randint(0,self.room_size), np.random.randint(0, self.room_size)]
         else:
             self.reward_position = reward_position
@@ -23,15 +27,13 @@ class RoomEnv:  # room with 1 agent, all square are 0 and agent is 1 #(BaseEnv):
         self.state[start_position[0], start_position[1]] = (
             1  # position the agent at start_position[x,y]
         )
+        print(reward_position)
+        self.state[self.reward_position[0], self.reward_position[1]] = 3
         self.done = False  # status of task
         self.rewards = 0  # rewards from task
 
-    def reset(self):
-        self.rewards = 0  # reset rewards to 0
-        self.state[self.start_point[0], self.start_point[1]] = (
-            1  # set agent to start position
-        )
-        self.agent_position = self.start_point
+    def action_space(self):
+        return (0, 1, 2, 3)
 
     def step(self, a=None, simulated=True):
         agent_position_x, agent_position_y = self.agent_position
@@ -57,13 +59,21 @@ class RoomEnv:  # room with 1 agent, all square are 0 and agent is 1 #(BaseEnv):
             self.done = True
             return True
 
-    def action_space(self):
-        return (0, 1, 2, 3)
+    def reset(self):
+        self.rewards = 0  # reset rewards to 0
+        self.state[self.start_point[0], self.start_point[1]] = (
+            1  # set agent to start position
+        )
+        self.agent_position = self.start_point
 
     def visualize_env(self):
+        # fig, ax = plt.subplots(figsize=(7, 7))
+        print(self.state.shape)
+        plt.grid(True, alpha=0.2)
         plt.imshow(self.state)
-        plt.xticks([])
-        plt.yticks([])
+        plt.xticks(range(self.room_size))
+        plt.yticks(range(self.room_size))
+        plt.tight_layout()
         plt.show()
 
 
@@ -72,6 +82,7 @@ def main():
     print("RUNNING")
     room_env = RoomEnv(room_size=10)
     room_env.visualize_env()
+    # plot_reward_function(room_env, reward_function  )
 
 
 # %%

@@ -1,12 +1,14 @@
 # %%
-import numpy as np
-from agent import Agent, reward_function as rp
+from agent import Agent
+from agent import reward_function as rp
 from env import RoomEnv
 from plots import plot_q_value_map
+
+
 # %%
 def main():
     steps = 10000
-    experiment = RoomEnv()
+    experiment = RoomEnv(room_size=6)
     # re = rp
     agent = Agent(
         reward_function=rp,
@@ -14,6 +16,7 @@ def main():
         learning_rate=0.8,
     )
     step_agent = []
+    experiment.visualize_env()
     for i in range(steps):
         s = experiment.agent_position
         action = agent.choose_action()
@@ -25,10 +28,10 @@ def main():
         reward = agent.update_V(s, snext)
         # print(reward)
         if reward > 0:
-            experiment.done=True
+            experiment.done = True
             pass
         if experiment.agent_position == experiment.reward_position:
-            experiment.done=True
+            experiment.done = True
             pass
         if experiment.done:
             print(f"EXIT AT STEP:{i}")
@@ -36,10 +39,10 @@ def main():
         # plot_q_value_map(experiment, agent)
         step_agent.append((i, agent))
 
-        
     # print(agent.V)
     # print(experiment.agent_position)
     plot_q_value_map(experiment, agent.V)
+
 
 # %%
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 # %%
+
 import numpy as np
-from copy import deepcopy
 
 
 # %%
@@ -75,14 +75,15 @@ class Agent_millidge(Agent):
         a = self.softmax_choice(Qs)
         env.step(a, simulated=False)
         return Qs
-    
+
     def update_V(self, s, snext):
         r = self.reward_function(self.env)
         V = self.V
         motivation = self.motivation
-        V[s[0]][s[1]] = motivation* (V[s[0]][s[1]] + self.lr * (
-            r + self.gamma * self.V[snext[0]][snext[1]] - V[s[0]][s[1]]
-        ))
+        V[s[0]][s[1]] = motivation * (
+            V[s[0]][s[1]]
+            + self.lr * (r + self.gamma * self.V[snext[0]][snext[1]] - V[s[0]][s[1]])
+        )
         self.V = V
         return r
 

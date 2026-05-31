@@ -9,9 +9,9 @@ class Agent:
         self,
         reward_function,
         env,
-        gamma=0.99,
+        gamma=0.99, # Discount factor for future rewards
         learning_rate=0.1,
-        beta=1,
+        beta=0, # Action policy weight
     ):
         self.gamma = gamma
         self.reward_function = reward_function

@@ -9,18 +9,18 @@ class Agent:
         self,
         reward_function,
         env,
-        gamma=0.99,
+        gamma=0.99, # Discount factor for future rewards
         learning_rate=0.1,
-        beta=1,
+        beta=0, # Action policy weight
     ):
         self.gamma = gamma
         self.reward_function = reward_function
         self.beta = beta
         self.lr = learning_rate
         self.env = env
-        # self.state = env.__init__()
         self.V = np.zeros((env.room_size, env.room_size))
         self.action_space = env.action_space()
+        self.reward = 0
 
     def update_V(self, s, snext):
         r = self.reward_function(self.env)
@@ -44,7 +44,49 @@ class Agent:
             Qs[a] = self.V[s_hat[0]][s_hat[1]]
         a = self.softmax_choice(Qs)
         env.step(a, simulated=False)
-        return a, Qs
+        return a
+
+
+# %%
+class Agent_millidge(Agent):
+    def __init__(
+        self,
+        reward_function,
+        env,
+        gamma=0.99,
+        learning_rate=0.1,
+        beta=1,
+        motivation=0.5,
+    ):
+        super().__init__(
+            reward_function,
+            env,
+            gamma=0.99,
+            learning_rate=0.1,
+            beta=1,
+        )
+        self.motivation = motivation
+
+    def choose_action(self):
+        Qs = np.zeros(len(self.action_space))
+        env = self.env
+        for a in self.env.action_space():
+            s_hat = env.step(a, simulated=True)
+            Qs[a] = self.V[s_hat[0]][s_hat[1]]
+        a = self.softmax_choice(Qs)
+        env.step(a, simulated=False)
+        return Qs
+
+    def update_V(self, s, snext):
+        r = self.reward_function(self.env)
+        V = self.V
+        motivation = self.motivation
+        V[s[0]][s[1]] = motivation * (
+            V[s[0]][s[1]]
+            + self.lr * (r + self.gamma * self.V[snext[0]][snext[1]] - V[s[0]][s[1]])
+        )
+        self.V = V
+        return r
 
 
 # %%
@@ -52,7 +94,7 @@ def reward_function(env):  # Return 1 if agent is at goal position or 0 otherwis
     if env.agent_position == env.reward_position:
         return 1
     else:
-        return -0.1
+        return -0.01
 
 
 # %%

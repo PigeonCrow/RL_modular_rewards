@@ -104,7 +104,7 @@ def plot_step_wise_q_value(env, Qs):
 
 def plot_q_value_map_ax(ax, env, agent_V):
     value_map = agent_V
-    print(value_map)
+    # print(value_map)
     m = np.nanmax(np.abs(value_map))
     cax = ax.imshow(
         value_map,
@@ -122,7 +122,7 @@ def plot_q_value_map_ax(ax, env, agent_V):
                 color="white" if abs(value_map[r, c]) > 0.5 * m else "black",
                 fontsize=8,
             )
-    ax.grid(True)
+    ax.grid(True, alpha=0.2)
     # ax.set_xticks([])
     # ax.set_yticks([])
 
@@ -140,6 +140,8 @@ def plot_q_value_maps(
     if len(agents) not in (1, len(envs)):
         raise ValueError("agents must be length 1 or same length as envs")
     N = len(envs)
+    if meta_value:
+        N += 1
     ncols = max(1, int(ncols))
     nrows = (N + ncols - 1) // ncols
     # Use constrained_layout to avoid tight_layout warning with colorbars / suptitle
@@ -156,16 +158,16 @@ def plot_q_value_maps(
     last_cax = None
     for i, env in enumerate(envs):
         ax = axes[i]
-
-        agent = agents[0] if len(agents) == 1 else agents[i]
+        ax.set_title(f"Agent-{i}")
+        # agent = agents[0] if len(agents) == 1 else agents[i]
+        agent = agents[i]
         last_cax = plot_q_value_map_ax(ax, env, agent.V)
 
     if meta_value:
-        ax = axes[i]
+        ax = axes[i + 1]
         ax.set_title("Meta Q-Values")
-        agent = agents[0] if len(agents) == 1 else agents[i]
-        meta_V = np.sum([agent.V for agent in agents], (1,))
-        print("meta", meta_V)
+        meta_V = np.sum([agent.V for agent in agents], axis=0)
+        # print("meta", meta_V)
         last_cax = plot_q_value_map_ax(ax, env, meta_V)
 
     for j in range(N, len(axes)):

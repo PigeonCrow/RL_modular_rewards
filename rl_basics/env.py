@@ -27,7 +27,6 @@ class RoomEnv:  # room with 1 agent, all square are 0 and agent is 1 #(BaseEnv):
         self.state[start_position[0], start_position[1]] = (
             1  # position the agent at start_position[x,y]
         )
-        print(reward_position)
         self.state[self.reward_position[0], self.reward_position[1]] = 3
         self.done = False  # status of task
         self.rewards = 0  # rewards from task
@@ -68,7 +67,6 @@ class RoomEnv:  # room with 1 agent, all square are 0 and agent is 1 #(BaseEnv):
 
     def visualize_env(self):
         # fig, ax = plt.subplots(figsize=(7, 7))
-        print(self.state.shape)
         plt.grid(True, alpha=0.2)
         plt.imshow(self.state)
         plt.xticks(range(self.room_size))

@@ -10,7 +10,7 @@ from plots import plot_q_value_map, plot_q_value_maps
 # %%
 def main():
     steps = 10000
-    n_agents = 6
+    n_agents = 3
     experiments = [RoomEnv() for x in range(0, n_agents)]
     # re = rp
     agents = [

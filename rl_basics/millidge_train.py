@@ -63,7 +63,7 @@ def main():
     plot_q_value_maps(
         [experiment1, experiment2, experiment3],
         [agent1, agent2, agent3],
-        meta_value=False,
+        meta_value=True,
     )
 
 

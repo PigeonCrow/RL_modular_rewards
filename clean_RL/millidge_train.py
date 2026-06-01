@@ -1,7 +1,7 @@
 # %%
-from millidge_agent import Agent
-from millidge_agent import reward_function as rp
-from millidge_env import RoomEnv
+from agent import Agent_millidge as Agent
+from agent import reward_function as rp
+from env import RoomEnv
 from plots import plot_q_value_map, plot_q_value_maps
 
 
@@ -11,27 +11,33 @@ def main():
     experiment1 = RoomEnv()
     experiment2 = RoomEnv()
     experiment3 = RoomEnv()
+    experiment1.visualize_env()
+    experiment2.visualize_env()
+    experiment3.visualize_env()
     # re = rp
     agent1 = Agent(
         reward_function=rp,
         env=experiment1,
         learning_rate=0.8,
+        motivation=0.01
     )
     agent2 = Agent(
         reward_function=rp,
         env=experiment2,
         learning_rate=0.8,
+        motivation=0.9
     )
     agent3 = Agent(
         reward_function=rp,
         env=experiment3,
         learning_rate=0.8,
+        motivation=0.5
     )
     for i in range(epochs):
         s = experiment1.agent_position  # Common for all experiments
-        action1, Q1 = agent1.choose_action()
-        action2, Q2 = agent2.choose_action()
-        action3, Q3 = agent3.choose_action()
+        Q1 = agent1.choose_action()
+        Q2 = agent2.choose_action()
+        Q3 = agent3.choose_action()
         # print(i)
         # print(action)
         # print(agent.V)
@@ -52,8 +58,9 @@ def main():
             experiment1.done = True
             pass
         if experiment1.done:
-            print(f"EXIT AT EPOCH:{i}")
-            break
+            # print(f"EXIT AT EPOCH:{i}")
+            # break
+            pass
         # plot_q_value_map(experiment1, agent1)
         # plot_q_value_map(experiment2, agent2)
         # plot_q_value_map(experiment3, agent3)

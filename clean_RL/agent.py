@@ -9,9 +9,9 @@ class Agent:
         self,
         reward_function,
         env,
-        gamma=0.99, # Discount factor for future rewards
+        gamma=0.99,  # Discount factor for future rewards
         learning_rate=0.1,
-        beta=0, # Action policy weight
+        beta=0,  # Action policy weight
     ):
         self.gamma = gamma
         self.reward_function = reward_function
@@ -26,7 +26,7 @@ class Agent:
         r = self.reward_function(self.env)
         V = self.V
         V[s[0]][s[1]] = V[s[0]][s[1]] + self.lr * (
-            r + self.gamma * self.V[snext[0]][snext[1]] - V[s[0]][s[1]]
+            r + self.gamma * self.V[snext[0]][snext[1]] - self.gamma**2 * V[s[0]][s[1]]
         )
         self.V = V
         return r
@@ -43,8 +43,8 @@ class Agent:
             s_hat = env.step(a, simulated=True)
             Qs[a] = self.V[s_hat[0]][s_hat[1]]
         a = self.softmax_choice(Qs)
-        env.step(a, simulated=False)
-        return a
+        env.step(a, simulated=True)
+        return Qs
 
 
 # %%
@@ -67,23 +67,12 @@ class Agent_millidge(Agent):
         )
         self.motivation = motivation
 
-    def choose_action(self):
-        Qs = np.zeros(len(self.action_space))
-        env = self.env
-        for a in self.env.action_space():
-            s_hat = env.step(a, simulated=True)
-            Qs[a] = self.V[s_hat[0]][s_hat[1]]
-        a = self.softmax_choice(Qs)
-        env.step(a, simulated=False)
-        return Qs
-
     def update_V(self, s, snext):
         r = self.reward_function(self.env)
         V = self.V
         motivation = self.motivation
         V[s[0]][s[1]] = motivation * (
-            V[s[0]][s[1]]
-            + self.lr * (r + self.gamma * self.V[snext[0]][snext[1]] - V[s[0]][s[1]])
+            V[s[0]][s[1]] + self.lr * (r + self.gamma * self.V[snext[0]][snext[1]] - self.gamma**2 * V[s[0]][s[1]])
         )
         self.V = V
         return r
@@ -96,5 +85,26 @@ def reward_function(env):  # Return 1 if agent is at goal position or 0 otherwis
     else:
         return -0.01
 
+
+# %%
+def dulberg_reward(env, h_star, h, n, m):
+    if env.agent_position == env.reward_position:
+        h = 1
+    else:
+        h = h - 0.01
+    return np.abs(h_star - h) ** (n) ** (1 / m)
+
+
 # %%
 
+
+# %%
+class Agent_dulberg(Agent):
+    def update_V(self, s, snext, h_star, h, n, m):
+        r = self.reward_function(self.env, h_star, h, n, m)
+        V = self.V
+        V[s[0]][s[1]] = V[s[0]][s[1]] + self.lr * (
+            r + self.gamma * self.V[snext[0]][snext[1]] - self.gamma**2 * V[s[0]][s[1]]
+        )
+        self.V = V
+        return r

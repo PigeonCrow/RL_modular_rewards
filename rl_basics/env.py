@@ -34,7 +34,7 @@ class RoomEnv:  # room with 1 agent, all square are 0 and agent is 1 #(BaseEnv):
     def action_space(self):
         return (0, 1, 2, 3)
 
-    def step(self, a=None, simulated=True):
+    def step(self, a=None, simulated=False):
         agent_position_x, agent_position_y = self.agent_position
         room_size = self.room_size
         if a == 0:  # Move up

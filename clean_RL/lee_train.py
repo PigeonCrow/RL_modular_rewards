@@ -2,8 +2,8 @@
 
 # from millidge_agent import Agent, reward_function as rp
 import numpy as np
-from agent import Agent_dulberg as Agent
-from agent import dulberg_reward as rp
+from agent import Agent_lee as Agent
+from agent import reward_function as rp
 from env import RoomEnv
 from plots import plot_q_value_map, plot_q_value_maps, plot_rewards
 
@@ -15,17 +15,12 @@ def main():
     experiments = [RoomEnv() for x in range(0, n_agents)]
     # re = rp
     agents = [Agent(reward_function=rp, env=experiment, learning_rate=0.8) for experiment in experiments]
-    h_star = np.ones(n_agents)  # [1, 1, 1, ....]
-    h = np.random.rand(n_agents)  # [0.5, 0.1, 0.3....]
-    h[0] = 1
-    print(h_star, h)
-    n = 4
-    m = 2
     rewards = np.zeros(n_agents)
     reward_track = []
     for i in range(steps):
         s = [experiment.agent_position for experiment in experiments]
         Qs = [agent.choose_action() for agent in agents]
+        global_rewward = rp(experiments[0])
         # print(i)
         # print(action)
         # print(agent.V)
@@ -35,7 +30,7 @@ def main():
         # meta_V =  np.sum([agent.V for agent in agents])
         snext = [experiment.step(meta_action) for experiment in experiments]
         # print(experiment.agent_position)
-        rewards = rewards + [agent.update_V(s[0], snext[0], h_star[i], h[i], n, m) for i, agent in enumerate(agents)]
+        rewards = rewards + [agent.update_V(s[0], snext[0], global_rewward, n_agents) for i, agent in enumerate(agents)]
         # print(rewards)
         reward_track.append(rewards)
         # meta_V =  np.sum([agent.V for agent in agents])

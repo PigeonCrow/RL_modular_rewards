@@ -108,3 +108,13 @@ class Agent_dulberg(Agent):
         )
         self.V = V
         return r
+
+class Agent_lee(Agent):
+    def update_V(self, s, snext, r, n_agents):
+        r = r/n_agents
+        V = self.V
+        V[s[0]][s[1]] = V[s[0]][s[1]] = V[s[0]][s[1]] + self.lr * (
+            r + self.gamma * self.V[snext[0]][snext[1]] - self.gamma**2 * V[s[0]][s[1]]
+        )
+        self.V = V
+        return r

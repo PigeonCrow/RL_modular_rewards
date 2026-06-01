@@ -37,7 +37,7 @@ def plot_q_value_map(env, agent_V):
             ax.text(
                 c,
                 r,
-                f"{value_map[r, c]:.2f}",
+                f"{value_map[r, c]:.4f}",
                 ha="center",
                 va="center",
                 color="white" if abs(value_map[r, c]) > 0.5 * m else "black",

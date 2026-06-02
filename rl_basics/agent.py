@@ -44,3 +44,9 @@ class Agent:
             Qs[a] = self.V[s_hat[0]][s_hat[1]]
         a = self.softmax_choice(Qs)
         return a
+
+def reward_function(env):  # Return 1 if agent is at goal position or 0 otherwiser
+    if env.agent_position == env.reward_position:
+        return 1
+    else:
+        return -0.01

@@ -27,7 +27,7 @@ class RoomEnv:  # room with 1 agent, all square are 0 and agent is 1 #(BaseEnv):
         self.state[start_position[0], start_position[1]] = (
             1  # position the agent at start_position[x,y]
         )
-        self.state[self.reward_position[0], self.reward_position[1]] = 3
+        self.state[self.reward_position[0], self.reward_position[1]] = -1
         self.done = False  # status of task
         self.rewards = 0  # rewards from task
 

@@ -2,9 +2,8 @@
 import numpy as np
 from agent import Agent
 from env import RoomEnv
+from plot import plot_q_value_map, plot_q_value_maps  # , plot_rewards
 from reward import reward_function as reward_function
-
-# from plots import plot_q_value_map, plot_q_value_maps, plot_rewards
 
 # %%
 if __name__ == "__main__":
@@ -12,12 +11,7 @@ if __name__ == "__main__":
     n_agents = 3
     experiments = [RoomEnv() for x in range(0, n_agents)]
     agents = [
-        Agent(
-            env=experiment,
-            reward_function=reward_function,
-            learning_rate=0.8,
-            gamma=0.3
-        )
+        Agent(env=experiment, reward_function=reward_function, learning_rate=0.8, gamma=0.3)
         for experiment in experiments
     ]
     total_rewards = np.zeros(n_agents)
@@ -25,7 +19,8 @@ if __name__ == "__main__":
     for i in range(steps):
         s = [experiment.agent_position for experiment in experiments]
         Qs = [agent.choose_action() for agent in agents]
-        meta_Q = np.sum(Qs, axis=1)
+        # meta_Q = np.sum(Qs, axis=1)
+        meta_Q = np.sum(Qs, axis=0)
         action = agents[0].softmax_choice(meta_Q)
         # print(f"{i}: \t{action}")
         snext = [experiment.step(action) for experiment in experiments]
@@ -44,3 +39,5 @@ if __name__ == "__main__":
             # print(f"FOUND REWARD AT STEP:{i}")
             # break
             pass
+    plot_q_value_map(experiments[0], agents[0].V)
+    plot_q_value_maps(experiments, agents)

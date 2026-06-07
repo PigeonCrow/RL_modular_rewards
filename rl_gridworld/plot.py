@@ -2,62 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import SymLogNorm
 
-# sns.set_theme('talk', font_scale=1.2)
-# cmap = sns.color_palette('Blues', as_cmap=True)
 
-
-def plot_rewards(rs):
-    xs = np.arange(0, len(rs))
-    plt.plot(xs, rs, label="Choice", linewidth="2")
-    # sns.despine(left=False, top=True, right=True, bottom=False)
-    plt.ylabel("Cumulative reward per step")
-    plt.xlabel("Timestep")
-    plt.title("reward_array")
-    plt.legend()
-    plt.xticks()
-    plt.yticks()
-    plt.show()
-
-
-def plot_q_value_map(env, agent_V):
-    value_map = agent_V
-    fig, ax = plt.subplots(figsize=(7, 7))
-
-    m = np.nanmax(np.abs(value_map))
-    cax = ax.imshow(
-        value_map,
-        cmap="viridis",
-        norm=SymLogNorm(linthresh=1e-2, linscale=1, base=10, vmin=-m, vmax=m),
-    )
-
-    fig.colorbar(cax, label="Log of State Value (max Q-value)")
-
-    for r in range(env.room_size):
-        for c in range(env.room_size):
-            ax.text(
-                c,
-                r,
-                f"{value_map[r, c]:.4f}",
-                ha="center",
-                va="center",
-                color="white" if abs(value_map[r, c]) > 0.5 * m else "black",
-                fontsize=12,
-            )
-
-    ax.set_title("Learned Policy and State Values", fontsize=16)
-    ax.grid(True, alpha=0.2)
-    # ax.set_xticks([])
-    # ax.set_yticks([])
-    plt.tight_layout()
-    plt.show()
-
-
-def plot_step_wise_q_value(env, Qs):
-
-    pass
-
-
-def plot_q_value_map_ax(env, agent_V, ax=None):
+def plot_q_value_map(env, agent_V, ax=None):
     value_map = agent_V
     # print(value_map)
     m = np.nanmax(np.abs(value_map))
@@ -85,9 +31,8 @@ def plot_q_value_map_ax(env, agent_V, ax=None):
     if show:
         plt.tight_layout()
         plt.show()
-    # ax.set_xticks([])
-    # ax.set_yticks([])
-
+    # ax.set_xticks([])     # to prevent grid
+    # ax.set_yticks([])     # to prevent grid
     return cax
 
 
@@ -97,7 +42,7 @@ def plot_q_value_maps(
     ncols=3,
     figsize_per_plot=4,
     meta_value=True,
-    suptitle="Learned Policies and State Values",
+    subtitle="Learned Policies and State Values",
 ):
     if len(agents) not in (1, len(envs)):
         raise ValueError("agents must be length 1 or same length as envs")
@@ -123,14 +68,14 @@ def plot_q_value_maps(
         ax.set_title(f"Agent-{i}")
         # agent = agents[0] if len(agents) == 1 else agents[i]
         agent = agents[i]
-        last_cax = plot_q_value_map_ax( env, agent.V, ax)
+        last_cax = plot_q_value_map(env, agent.V, ax)
 
     if meta_value:
         ax = axes[i + 1]
         ax.set_title("Meta Q-Values")
         meta_V = np.sum([agent.V for agent in agents], axis=0)
         # print("meta", meta_V)
-        last_cax = plot_q_value_map_ax( env, meta_V, ax)
+        last_cax = plot_q_value_map(env, meta_V, ax)
 
     for j in range(N, len(axes)):
         axes[j].axis("off")
@@ -143,5 +88,5 @@ def plot_q_value_maps(
             shrink=0.8,
         )
 
-    fig.suptitle(suptitle, fontsize=16)
+    fig.suptitle(subtitle, fontsize=16)
     plt.show()

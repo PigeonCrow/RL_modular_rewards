@@ -21,6 +21,7 @@ if __name__ == "__main__":
     for i in range(steps):
         s = environment.agent_position
         Qs = agent.choose_action()
+        print(i,">>",Qs)
         action = agent.softmax_choice(Qs)
         # print(f"{i}: \t{action} \t{str(agent.V)}")
         snext = environment.step(action)

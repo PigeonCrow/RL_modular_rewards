@@ -5,7 +5,7 @@ import numpy as np
 from agent import Agent_dulberg as Agent
 from agent import dulberg_reward as rp
 from env import RoomEnv
-from plots import plot_q_value_map, plot_q_value_maps, plot_rewards
+from plots import plot_q_value_map, plot_q_value_map_ax, plot_q_value_maps, plot_rewards
 
 
 # %%
@@ -49,6 +49,7 @@ def main():
     # print(agent.V)
     # print(experiment.agent_position)
     plot_q_value_map(experiments[0], agents[0].V)
+    plot_q_value_map_ax(ax=None,env=experiments[0], agent_V=agents[0].V)
     plot_q_value_maps(experiments, agents)
     plot_rewards(np.vstack(reward_track).T[0])
     # plot_rewards(np.vstack(reward_track).T[1])

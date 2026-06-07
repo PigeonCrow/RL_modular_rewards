@@ -90,3 +90,16 @@ def plot_q_value_maps(
 
     fig.suptitle(subtitle, fontsize=16)
     plt.show()
+
+
+def plot_rewards(rs):
+    xs = np.arange(0, len(rs))
+    plt.plot(xs, rs, label="Total Rewards", linewidth="2")
+    # sns.despine(left=False, top=True, right=True, bottom=False)
+    plt.ylabel("Cumulative reward per step")
+    plt.xlabel("Timestep")
+    plt.title("Total Rewards")
+    plt.legend()
+    plt.xticks()
+    plt.yticks()
+    plt.show()

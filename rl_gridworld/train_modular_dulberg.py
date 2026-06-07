@@ -3,13 +3,13 @@
 import numpy as np
 from agent import Agent_dulberg as Agent
 from env import RoomEnv
-from plot import plot_q_value_map, plot_q_value_maps  # , plot_rewards
+from plot import plot_q_value_map, plot_q_value_maps, plot_rewards
 from reward import dulberg_reward as reward_function
 
 
 # %%
 def main():
-    steps = 500
+    steps = 1000
     n_agents =3
     experiments = [RoomEnv() for x in range(0, n_agents)]
     agents = [
@@ -33,7 +33,7 @@ def main():
         s = [experiment.agent_position for experiment in experiments]
         Qs = [agent.choose_action() for agent in agents]
         meta_Q = np.sum(Qs, axis=0)
-        print(i,">>",meta_Q)
+        # print(i,">>",meta_Q)
         action = agents[0].softmax_choice(meta_Q)
         # print(f"{i}: \t{action}")
         snext = [experiment.step(action) for experiment in experiments]
@@ -52,9 +52,9 @@ def main():
     # print(experiment.agent_position)
     plot_q_value_map(experiments[0], agents[0].V)
     plot_q_value_maps(experiments, agents)
-    # plot_rewards(np.vstack(reward_track).T[0])
-    # plot_rewards(np.vstack(reward_track).T[1])
-    # plot_rewards(np.vstack(reward_track).T[2])
+    plot_rewards(np.vstack(reward_track).T[0])
+    plot_rewards(np.vstack(reward_track).T[1])
+    plot_rewards(np.vstack(reward_track).T[2])
 
 
 # %%

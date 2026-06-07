@@ -33,7 +33,7 @@ class Agent:
 
     def softmax_choice(self, Qs):
         ps = np.exp(self.beta * Qs) / np.sum(np.exp(self.beta * Qs))
-        # print("ps",ps)
+        print("ps", ps)
         a = np.random.choice(len(ps), p=ps)
         return a
 
